@@ -1,0 +1,22 @@
+{
+    "name": "apx-pptonline-consigna-desafio",
+    "version": "1.0.0",
+    "description": "",
+    "source": "client/index.html",
+    "scripts": {
+        "build:backend": "tsc -p tsconfig2.json",
+        "build": "tsc -p tsconfig2.json && parcel build",
+        "start": "node ./server/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "parcel": "^2.13.3",
+        "typescript": "^5.7.3"
+    },
+    "dependencies": {
+        "@types/express": "^5.0.0",
+        "express": "^4.21.2"
+    }
+}
