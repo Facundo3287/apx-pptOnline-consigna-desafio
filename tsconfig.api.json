@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src-api",
+        "outDir": "./api",
+        "module": "nodenext",
+        "target": "esnext",
+        "esModuleInterop": true,
+        "strict": true },
+    "include": ["./src-api"],
+    "exclude": ["./src-front", "node_modules"]
+}

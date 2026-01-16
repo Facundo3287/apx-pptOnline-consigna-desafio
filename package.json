@@ -1,0 +1,29 @@
+{
+    "name": "apx-pptonline-consigna-desafio-nuevo",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev:back": "tsx --watch ./src-api/controller.ts",
+        "build:back": "tsc --project tsconfig.api.json",
+        "dev:front": "vite",
+        "build:front": "tsc && vite build",
+        "preview": "vite preview",
+        "dev": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
+        "build": "npm run build:back && npm run build:front",
+        "start": "node ./api/controller.js"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/node": "^25.0.9",
+        "concurrently": "^9.2.1",
+        "express": "^5.2.1",
+        "tsx": "^4.21.0",
+        "typescript": "~5.9.3",
+        "vite": "^7.2.4"
+    },
+    "dependencies": {
+        "cors": "^2.8.5"
+    }
+}
