@@ -7,13 +7,13 @@ let PORT: any = process.env.PORT || 8000;
 let ruta: string = import.meta.url;
 let __dirname: string = fileURLToPath(ruta);
 __dirname = path.dirname(__dirname);  
-let url: string = path.join(__dirname, "..", 'dist-front');
+let url: string = path.join(__dirname, "..", 'dist');
 let app = express();
 app.use(express.static(url));
 app.use(cors());
 
 app.get(/.*/, (req, res) => {
-    let url: string = path.join(__dirname, "..", 'dist-front', "index.html");
+    let url: string = path.join(__dirname, "..", 'dist', "index.html");
     res.sendFile(url)
 });
 
