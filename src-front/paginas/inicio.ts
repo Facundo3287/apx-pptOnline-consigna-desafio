@@ -1,4 +1,4 @@
-export default function pagInicio(goTo: (url: string) => void): void {
+export default function pagInicio(): void {
     let app: HTMLElement = document.getElementById('app')!;
     app.innerHTML = ``;
     app.innerHTML = `
@@ -7,3 +7,4 @@ export default function pagInicio(goTo: (url: string) => void): void {
         <mi-form hidden = '' class = 'formCrear' tipo = 'crear'></mi-form>
         <mi-form hidden = '' class = 'formIngresar' tipo = 'ingresar'></mi-form>`
 }
+//goTo: (url: string) => void
