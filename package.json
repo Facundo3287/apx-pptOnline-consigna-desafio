@@ -4,26 +4,30 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev:back": "tsx --watch ./src-api/controller.ts",
+        "dev:back": "tsx --watch ./src-api/api.ts",
         "build:back": "tsc --project tsconfig.api.json",
         "dev:front": "vite",
         "build:front": "tsc && vite build",
         "preview": "vite preview",
         "dev": "concurrently \"npm run dev:back\" \"npm run dev:front\"",
         "build": "npm run build:back && npm run build:front",
-        "start": "node ./api/controller.js"
+        "start": "node ./api/api.js"
     },
     "devDependencies": {
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
         "@types/node": "^25.0.9",
         "concurrently": "^9.2.1",
+        "dotenv-esm": "^16.0.3-4",
         "express": "^5.2.1",
         "tsx": "^4.21.0",
         "typescript": "~5.9.3",
         "vite": "^7.2.4"
     },
     "dependencies": {
-        "cors": "^2.8.5"
+        "cors": "^2.8.5",
+        "firebase": "^12.8.0",
+        "firebase-admin": "^13.6.0",
+        "uuid": "^13.0.0"
     }
 }

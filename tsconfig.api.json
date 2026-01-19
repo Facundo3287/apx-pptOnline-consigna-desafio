@@ -5,6 +5,7 @@
         "module": "nodenext",
         "target": "esnext",
         "esModuleInterop": true,
+        "resolveJsonModule": true,
         "strict": true },
     "include": ["./src-api"],
     "exclude": ["./src-front", "node_modules"]
