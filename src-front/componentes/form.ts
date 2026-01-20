@@ -34,7 +34,7 @@ export default function miForm() {
             form.addEventListener('submit', (e: SubmitEvent) => {
                 e.preventDefault();
                 if (tipo == 'crear') state.stateCrearRoom(input.value)
-                //else if (tipo == 'ingresar') state.stateBuscarRoom(input.value)
+                else if (tipo == 'ingresar') state.stateBuscarRoom(input.value)
             });
             return form };
 

@@ -7,4 +7,4 @@ export default function pagInicio(): void {
         <mi-form hidden = '' class = 'formCrear' tipo = 'crear'></mi-form>
         <mi-form hidden = '' class = 'formIngresar' tipo = 'ingresar'></mi-form>`
 }
-//goTo: (url: string) => void
+//

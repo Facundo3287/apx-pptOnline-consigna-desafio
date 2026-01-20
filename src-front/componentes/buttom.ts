@@ -1,4 +1,4 @@
-// import { state } from '../state';
+import state from '../state';
 
 export default function miButtom() {
     class MiButttom extends HTMLElement {
@@ -33,7 +33,7 @@ export default function miButtom() {
                     document.querySelector('.textoJugar')!.setAttribute('hidden', '');
                     document.querySelector('.buttomJugar')!.setAttribute('hidden', '');
                     document.querySelector('.textoEspera')!.removeAttribute('hidden');
-                    //state.statePreparado() 
+                    state.statePreparado() 
                 }
             });
 

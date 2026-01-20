@@ -36,6 +36,48 @@ app.post('/cuenta', (req, res) => {
     }); 
 }); 
 
+app.post('/crearRoom', (req, res) => { 
+    let longId: string = uuidv4();
+    let shortId: string = longId.slice(0, 5);
+    let roomData = { 
+        creador: req.body.idUser,
+        preparados: 0,
+        jugadas: { propietario: 'null', invitado: 'null' } };
+    rtdb.ref(`/Rooms/${longId}`)
+    .set(roomData)
+    .then( (aux) => { 
+        let respuesta = { newRoom: true, longId: longId, shortId: shortId,  };
+        res.json(respuesta) } )
+    .catch( (err) => { 
+        let respuesta = { newRoom: false };
+        res.send(respuesta) } )
+});
+
+app.post('/guardarRoom', (req, res) => {
+    let contenido = { room: req.body.longId };
+    let documentRef = firestore.doc(`rooms/${req.body.shortId}`);
+    documentRef.set(contenido)
+    .then( aux => { 
+        let respuesta = { registro: true };
+        res.json(respuesta) } )
+    .catch( (err) => { 
+        let respuesta = { registro: false };
+        res.json(respuesta) })
+});
+
+app.post('/buscarRoom', (req, res) => {
+    let documentRef = firestore.doc(`rooms/${req.body.shortId}`);
+    documentRef.get().then(documentSnapshot => {
+        if (documentSnapshot.exists) {
+            let data = documentSnapshot.data();
+            let respuesta = { busqueda: true, longId: data };
+            res.json(respuesta) }
+        else {
+            let respuesta = { busqueda: false };
+            res.json(respuesta) }
+    })
+});
+
 app.get(/.*/, (req, res) => {
     let url: string = path.join(__dirname, "..", 'dist', "index.html");
     res.sendFile(url)

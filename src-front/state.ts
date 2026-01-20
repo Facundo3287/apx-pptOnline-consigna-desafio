@@ -1,10 +1,14 @@
 import type { State, Data } from './tipos/state-tipos';
-import * as api from './api.js';
+import api from './api.js';
+import conectedRtdb from './rtdb.js';
 
 let state: State = {
     data: {
         nombre: null,
-        idUser: null
+        idUser: null,
+        shortId: null,
+        longId: null,
+        contexto: 'preparacion'
     },
     listeners: [], 
     getState: function(): Data {
@@ -17,16 +21,49 @@ let state: State = {
     suscribirse(sub: () => void): void {
         this.listeners.push(sub)
     },
-    async stateCrearRoom(nombre: string): Promise<void> {
+    async stateCrearRoom(nombre): Promise<void> {
         try {
             let estado: Data = this.getState();
             estado.nombre = nombre;
-            let idUser: string = await api.apiCuenta(estado);
+            let idUser: string = await api.cuenta(estado);
             estado.idUser = idUser;
-            console.log('stateCrearRoom ===> ', estado)
-        }
+            let idRoom: any = await api.crearRoom(estado);
+            estado.shortId = idRoom.shortId;
+            estado.longId = idRoom.longId;
+            await api.guardarRoom(estado);
+            estado.contexto = 'roomCreada';
+            await conectedRtdb(estado);
+            this.setState(estado) }
         catch(e) {
             console.log('stateCrearRoom ====> error') }
+    },
+    async stateBuscarRoom(shortId: string): Promise<void> {
+        try {
+            let estado: Data = this.getState();
+            estado.shortId = shortId;
+            let longId = await api.buscarRoom(estado);
+            estado.longId = longId;
+            estado.contexto = 'roomEncontrada';
+            await conectedRtdb(estado);
+            this.setState(estado) }
+        catch(e) {
+            console.log('stateBuscarRoom ====> error') }
+    },
+    statePreparado(): void {
+        console.log('estoy preparado') },
+    stateCoordinadorRtdb(dataRtdb: any): void {
+        let estado: Data = this.getState();
+        if (estado.contexto == 'coordinando' && dataRtdb.preparados == 2) {
+            estado.contexto = 'unificando';
+            console.log('stateCoordinadorRtdb() =====> ', dataRtdb);
+          //  this.setState(estado) 
+        }
+            /*
+        else if (estado.contexto == 'unificando' && dataRtdb.jugadas.propietario != 'null' && dataRtdb.jugadas.invitado != 'null') {
+            estado.contexto = 'jugadasObtenidas';
+            estado.jugadaPropietario = dataRtdb.jugadas.propietario;
+            estado.jugadaInvitado = dataRtdb.jugadas.invitado;
+            this.setState(estado) } */
     },
 };
 

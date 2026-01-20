@@ -4,9 +4,15 @@ export interface State {
     getState: () => Data;
     setState: (estado: Data) => void;
     suscribirse: ( sub: () => void ) => void;
-    stateCrearRoom: (nombre: string) => Promise<void>
+    stateCrearRoom: (nombre: string) => Promise<void>;
+    stateBuscarRoom: (shortId: string) => Promise<void>;
+    statePreparado: () => void;
+    stateCoordinadorRtdb: (dataRtdb: any) => void
 };
 
 export interface Data {
     nombre: string | null;
-    idUser: string | null };
+    idUser: string | null;
+    shortId: string | null;
+    longId: string | null;
+    contexto: string };
