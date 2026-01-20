@@ -34,8 +34,8 @@ function crearRoom (estado: Data): Promise<any> {
         .then( (dataRoom) => { 
             if (dataRoom.newRoom == true) {
                 let respuesta = { longId: dataRoom.longId, shortId: dataRoom.shortId };
-                resolve(respuesta) 
-            }
+                resolve(respuesta) }
+            else if (dataRoom.newRoom == false) console.log('api.crearRoom() => error')
         })
     })  
 };
@@ -53,7 +53,10 @@ function guardarRoom(estado: Data): Promise<any> {
     return new Promise ( (resolve) => {
         fetch(endpoint, config)
         .then( (response) => { return response.json() } )
-        .then( (data) => { resolve(data) } )
+        .then( (data) => { 
+            if (data.registro == true) resolve(data) 
+            else if (data.registro == false) console.log('api.guardarRoom() => error')
+        })
     })   
 };
 
@@ -69,13 +72,49 @@ function buscarRoom(estado: Data): Promise <any> {
         fetch(endpoint, config)
         .then( (response) => { return response.json() } )
         .then( (data) => { 
-            if (data.busqueda == true) { 
-                resolve(data.longId.room) }
+            if (data.busqueda == true) resolve(data.longId.room) 
+            else if (data.busqueda == false) console.log('api.buscarRoom() => error')
         })
     })
 };
 
-export default { cuenta, crearRoom, guardarRoom, buscarRoom }
+function preparado (estado: Data): void {
+    let apiUrl: string = obtenerUrlDeEntorno();
+    let endpoint: string = apiUrl + 'preparado'; 
+    let body = { longId: estado.longId };
+    let config = { 
+        method: 'POST', 
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json; charset=UTF-8" }  };
+    fetch(endpoint, config)
+    .then( (response) => { return response.json() } )
+    .then( (data) => { 
+        if (data.respuesta == true) return data 
+        else if (data.respuesta == false) console.log('api.buscarRoom() => error')
+    })
+};
+
+function subirJugada (estado: Data): void {
+    let apiUrl: string = obtenerUrlDeEntorno();
+    let endpoint: string = apiUrl + 'subirJugada'; 
+    let body: any;
+    if (estado.nombre != null) body = { longId: estado.longId, jugada: estado.jugadaPropietario, rol: 'propietario' }
+    else if (estado.nombre == null) body = { longId: estado.longId, jugada: estado.jugadaInvitado, rol: 'invitado' };
+    console.log('api.subirJugada() => estado => ', estado);
+    console.log('api.subirJugada() => body => ', body);
+    let config = { 
+        method: 'POST', 
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json; charset=UTF-8" }  };
+    fetch(endpoint, config)
+    .then( (response) => { return response.json() } )
+    .then( (data) => { 
+        if (data.respuesta == true) return data 
+        else if (data.respuesta == false) console.log('api.subirJugada() => error')
+    }) 
+}
+
+export default { cuenta, crearRoom, guardarRoom, buscarRoom, preparado, subirJugada }
 
 
 

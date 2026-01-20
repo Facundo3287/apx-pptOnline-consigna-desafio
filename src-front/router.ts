@@ -1,5 +1,7 @@
 import pagInicio from "./paginas/inicio.js";
 import pagRoom from "./paginas/room.js";
+import pagPartida from "./paginas/partida.js";
+import pagResultados from "./paginas/resultados.js";
 import state from './state.js';
 import type { Ruta } from './tipos/router-tipos';
 
@@ -35,5 +37,7 @@ function routerSub(): void {
 
 let rutas: Ruta[] = [
     { ruta: '/inicio', metodo: pagInicio },
-    { ruta: '/room', metodo: pagRoom }
+    { ruta: '/room', metodo: pagRoom },
+    { ruta: "/partida", metodo: pagPartida },
+    { ruta: "/resultados", metodo: pagResultados }
 ];

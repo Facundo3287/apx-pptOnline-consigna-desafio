@@ -7,6 +7,8 @@ export interface State {
     stateCrearRoom: (nombre: string) => Promise<void>;
     stateBuscarRoom: (shortId: string) => Promise<void>;
     statePreparado: () => void;
+    stateSubirJugada: () => void;
+    duelo: () => void;
     stateCoordinadorRtdb: (dataRtdb: any) => void
 };
 
@@ -15,4 +17,9 @@ export interface Data {
     idUser: string | null;
     shortId: string | null;
     longId: string | null;
-    contexto: string };
+    contexto: string;
+    jugadaPropietario: string;
+    jugadaInvitado: string;
+    resultado: string | null;
+    propietarioWins: number;
+    invitadoWins: number };

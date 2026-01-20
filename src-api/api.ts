@@ -49,6 +49,7 @@ app.post('/crearRoom', (req, res) => {
         let respuesta = { newRoom: true, longId: longId, shortId: shortId,  };
         res.json(respuesta) } )
     .catch( (err) => { 
+        console.log('/crearRoom => error');
         let respuesta = { newRoom: false };
         res.send(respuesta) } )
 });
@@ -61,6 +62,7 @@ app.post('/guardarRoom', (req, res) => {
         let respuesta = { registro: true };
         res.json(respuesta) } )
     .catch( (err) => { 
+        console.log('/guardarRoom => error');
         let respuesta = { registro: false };
         res.json(respuesta) })
 });
@@ -73,9 +75,60 @@ app.post('/buscarRoom', (req, res) => {
             let respuesta = { busqueda: true, longId: data };
             res.json(respuesta) }
         else {
+            console.log('/buscarRoom => error');
             let respuesta = { busqueda: false };
             res.json(respuesta) }
     })
+});
+
+app.post('/preparado', async (req, res) => {
+    try {
+        let ref = rtdb.ref();
+        let snapshot = await ref.child("Rooms").child(req.body.longId).get();
+        let data = snapshot.val();
+        if (data == null) { 
+            throw 'error' }
+        else if (data != null && data.preparados == 0) { 
+            data.preparados = 1;
+            await rtdb.ref(`Rooms/${req.body.longId}`).set(data);
+            let respuesta = { resultado: true };
+            res.json(respuesta) }
+        else if (data != null && data.preparados == 1) { 
+            data.preparados = 2;
+            await rtdb.ref(`Rooms/${req.body.longId}`).set(data);
+            let respuesta = { resultado: true };
+            res.json(respuesta) } }
+    catch(e) {
+        console.log('/preparado => error');
+        let respuesta = { respuesta: false };
+        res.status(500);
+        res.json(respuesta) }
+});
+
+app.post('/subirJugada', async (req, res) => {
+    try {
+        console.log('/subirJugada => ', req.body);
+        let ref = rtdb.ref();
+        let snapshot = await ref.child("Rooms").child(req.body.longId).get();
+        let data = snapshot.val();
+        if (req.body.rol == 'propietario') {
+            console.log('/subirJugada => 1 => ', data);
+            data.jugadas.propietario = req.body.jugada;
+            console.log('/subirJugada => 1 => ', data);
+            await rtdb.ref(`Rooms/${req.body.longId}`).set(data) }
+        else if (req.body.rol == 'invitado') {
+            console.log('/subirJugada => 2 => ', data);
+            data.jugadas.invitado = req.body.jugada;
+            console.log('/subirJugada => 2 => ', data);
+            await rtdb.ref(`Rooms/${req.body.longId}`).set(data) };
+        console.log('--------------------------------------------------------');
+        let respuesta = { respuesta: true };
+        res.json(respuesta) }
+    catch(e) {
+        console.log('/subirJugada => error');
+        let respuesta = { respuesta: false };
+        res.status(500);
+        res.json(respuesta) }
 });
 
 app.get(/.*/, (req, res) => {
