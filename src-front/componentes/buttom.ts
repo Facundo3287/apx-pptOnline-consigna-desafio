@@ -9,7 +9,7 @@ export default function miButtom() {
             this.render() };
 
         etiquetas() {
-            let buttom: HTMLElement = document.createElement('buttom');
+            let buttom: HTMLElement = document.createElement('div');
             let contenido: string = this.getAttribute('contenido')!;
             let tipo: string = this.getAttribute('tipo')!;
             buttom.setAttribute('class', 'buttom');
@@ -21,9 +21,15 @@ export default function miButtom() {
                     document.querySelector('.buttomIngresar')!.setAttribute('hidden', '');
                     document.querySelector('.formCrear')!.removeAttribute('hidden') }
                 else if (tipo == 'ingresar') {
-                    this.setAttribute('hidden', '');
-                    document.querySelector('.buttomCrear')!.setAttribute('hidden', '');
-                    document.querySelector('.formIngresar')!.removeAttribute('hidden') } 
+                    let tipoDeRoom: boolean = state.stateInit();
+                    if (tipoDeRoom == false ) {
+                        console.log('2.1');
+                        this.setAttribute('hidden', '');
+                        document.querySelector('.buttomCrear')!.setAttribute('hidden', '');
+                        document.querySelector('.formIngresar')!.removeAttribute('hidden') }
+                    else if (tipoDeRoom == true) { 
+                        console.log('2.2');
+                        state.stateRetomarRoom() } } 
                 else if (tipo == 'siguiente') {
                     document.querySelector('.textoCodigo')!.setAttribute('hidden', '');
                     this.setAttribute('hidden', '');
@@ -33,8 +39,9 @@ export default function miButtom() {
                     document.querySelector('.textoJugar')!.setAttribute('hidden', '');
                     document.querySelector('.buttomJugar')!.setAttribute('hidden', '');
                     document.querySelector('.textoEspera')!.removeAttribute('hidden');
-                    state.statePreparado() 
-                }
+                    state.statePreparado() }
+                else if (tipo == 'duelo') {
+                    state.duelo() }
             });
 
             return buttom  }; 
@@ -42,18 +49,31 @@ export default function miButtom() {
         css() {
             let style: HTMLElement = document.createElement('style');
             style.innerHTML = `
+
                 * {  box-sizing: border-box }
             
                 .buttom {
-                margin-top: 10px;
-                margin-bottom: 10px;
-                display: block;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                width: 100%;
-                background-color: #05172f;
+                padding-top: 2vh;
+                padding-bottom: 2vh;
+                padding-left: 2vw;
+                padding-right: 2vw;
+                border: 1px solid white;
+                border-radius: 0px;
+                width: 40vw;
+                background-color: rgb(40, 40, 40);
                 text-align: center;
-                color: white }`;
+                font-size: 20px;
+                font-family: "Zain", sans-serif;
+                font-weight: 700;
+                font-style: normal;
+                line-height: 3;
+                color: white }
+
+                .buttom:hover {
+                background-color: rgb(60, 60, 60)}
+                .buttom:active {
+                background-color: rgb(20, 20, 20) }`;
+
             return style };
 
         render() {

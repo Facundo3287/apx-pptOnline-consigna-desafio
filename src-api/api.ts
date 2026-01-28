@@ -42,7 +42,8 @@ app.post('/crearRoom', (req, res) => {
     let roomData = { 
         creador: req.body.idUser,
         preparados: 0,
-        jugadas: { propietario: 'null', invitado: 'null' } };
+        jugadas: { propietario: 'null', invitado: 'null' },
+        historial: { propietario: 0 , invitado: 0 } };
     rtdb.ref(`/Rooms/${longId}`)
     .set(roomData)
     .then( (aux) => { 
@@ -81,7 +82,7 @@ app.post('/buscarRoom', (req, res) => {
     })
 });
 
-app.post('/preparado', async (req, res) => {
+app.put('/preparado', async (req, res) => {
     try {
         let ref = rtdb.ref();
         let snapshot = await ref.child("Rooms").child(req.body.longId).get();
@@ -97,6 +98,9 @@ app.post('/preparado', async (req, res) => {
             data.preparados = 2;
             await rtdb.ref(`Rooms/${req.body.longId}`).set(data);
             let respuesta = { resultado: true };
+            res.json(respuesta) }
+        else if (data != null && data.preparados == 2) { 
+            let respuesta = { resultado: false };
             res.json(respuesta) } }
     catch(e) {
         console.log('/preparado => error');
@@ -105,27 +109,41 @@ app.post('/preparado', async (req, res) => {
         res.json(respuesta) }
 });
 
-app.post('/subirJugada', async (req, res) => {
+app.put('/subirJugada', async (req, res) => {
     try {
-        console.log('/subirJugada => ', req.body);
         let ref = rtdb.ref();
         let snapshot = await ref.child("Rooms").child(req.body.longId).get();
         let data = snapshot.val();
         if (req.body.rol == 'propietario') {
-            console.log('/subirJugada => 1 => ', data);
             data.jugadas.propietario = req.body.jugada;
-            console.log('/subirJugada => 1 => ', data);
             await rtdb.ref(`Rooms/${req.body.longId}`).set(data) }
         else if (req.body.rol == 'invitado') {
-            console.log('/subirJugada => 2 => ', data);
             data.jugadas.invitado = req.body.jugada;
-            console.log('/subirJugada => 2 => ', data);
             await rtdb.ref(`Rooms/${req.body.longId}`).set(data) };
-        console.log('--------------------------------------------------------');
         let respuesta = { respuesta: true };
         res.json(respuesta) }
     catch(e) {
         console.log('/subirJugada => error');
+        let respuesta = { respuesta: false };
+        res.status(500);
+        res.json(respuesta) }
+});
+
+app.put('/actualizarDatos', async (req, res) => {
+    try {
+        let ref = rtdb.ref();
+        let snapshot = await ref.child("Rooms").child(req.body.longId).get();
+        let data = snapshot.val();
+        data.preparados = 0;
+        data.jugadas.propietario = 'null';
+        data.jugadas.invitado = 'null';
+        data.historial.propietario = req.body.propietarioWins;
+        data.historial.invitado = req.body.invitadoWins;
+        await rtdb.ref(`Rooms/${req.body.longId}`).set(data) 
+        let respuesta = { respuesta: true };
+        res.json(respuesta) }
+    catch(e) {
+        console.log('/actualizarHistorial => error');
         let respuesta = { respuesta: false };
         res.status(500);
         res.json(respuesta) }

@@ -1,6 +1,7 @@
 import pagInicio from "./paginas/inicio.js";
 import pagRoom from "./paginas/room.js";
 import pagPartida from "./paginas/partida.js";
+import pagDuelo from "./paginas/duelo.js";
 import pagResultados from "./paginas/resultados.js";
 import state from './state.js';
 import type { Ruta } from './tipos/router-tipos';
@@ -30,8 +31,11 @@ function routerSub(): void {
         let estado = state.getState();
         if (estado.contexto == 'roomCreada') goTo('/room') 
         else if (estado.contexto == 'roomEncontrada') goTo('/room')
+        else if (estado.contexto == 'roomCerrada') goTo('/room')
         else if (estado.contexto == 'unificando') goTo('/partida')
+        else if (estado.contexto == 'jugadasObtenidas') goTo('/duelo')
         else if (estado.contexto == 'ganadorDefinido') { goTo('/resultados') }
+        else if (estado.contexto == 'nuevaPartida') { goTo('/room') }
     })
 };
 
@@ -39,5 +43,6 @@ let rutas: Ruta[] = [
     { ruta: '/inicio', metodo: pagInicio },
     { ruta: '/room', metodo: pagRoom },
     { ruta: "/partida", metodo: pagPartida },
+    { ruta: '/duelo', metodo: pagDuelo },
     { ruta: "/resultados", metodo: pagResultados }
 ];

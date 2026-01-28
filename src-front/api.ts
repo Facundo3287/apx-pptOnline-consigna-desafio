@@ -1,4 +1,5 @@
 import type { Data } from './tipos/state-tipos';
+import state from './state.js';
 
 function obtenerUrlDeEntorno(): string {
     if (import.meta.env.MODE == 'development') return 'http://localhost:8000/'
@@ -83,14 +84,18 @@ function preparado (estado: Data): void {
     let endpoint: string = apiUrl + 'preparado'; 
     let body = { longId: estado.longId };
     let config = { 
-        method: 'POST', 
+        method: 'PUT', 
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json; charset=UTF-8" }  };
     fetch(endpoint, config)
     .then( (response) => { return response.json() } )
     .then( (data) => { 
         if (data.respuesta == true) return data 
-        else if (data.respuesta == false) console.log('api.buscarRoom() => error')
+        else if (data.respuesta == false) { 
+            let estado = state.getState();
+            estado.contexto = 'roomCerrada';
+            state.setState(estado);
+            console.log('api.buscarRoom() => error') }
     })
 };
 
@@ -100,10 +105,8 @@ function subirJugada (estado: Data): void {
     let body: any;
     if (estado.nombre != null) body = { longId: estado.longId, jugada: estado.jugadaPropietario, rol: 'propietario' }
     else if (estado.nombre == null) body = { longId: estado.longId, jugada: estado.jugadaInvitado, rol: 'invitado' };
-    console.log('api.subirJugada() => estado => ', estado);
-    console.log('api.subirJugada() => body => ', body);
     let config = { 
-        method: 'POST', 
+        method: 'PUT', 
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json; charset=UTF-8" }  };
     fetch(endpoint, config)
@@ -112,9 +115,28 @@ function subirJugada (estado: Data): void {
         if (data.respuesta == true) return data 
         else if (data.respuesta == false) console.log('api.subirJugada() => error')
     }) 
+};
+
+function actualizarDatos (estado: Data): void {
+    let apiUrl: string = obtenerUrlDeEntorno();
+    let endpoint: string = apiUrl + 'actualizarDatos'; 
+    let body: any = { 
+        longId: estado.longId,
+        propietarioWins: estado.propietarioWins, 
+        invitadoWins: estado.invitadoWins };
+    let config = { 
+        method: 'PUT', 
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json; charset=UTF-8" }  };
+    fetch(endpoint, config)
+    .then( (response) => { return response.json() } )
+    .then( (data) => { 
+        if (data.respuesta == true) return data 
+        else if (data.respuesta == false) console.log('api.actualizarHistorial() => error')
+    }) 
 }
 
-export default { cuenta, crearRoom, guardarRoom, buscarRoom, preparado, subirJugada }
+export default { cuenta, crearRoom, guardarRoom, buscarRoom, preparado, subirJugada, actualizarDatos }
 
 
 

@@ -9,10 +9,6 @@ export default function miPartida() {
             this.htmlPaginaEleccionDeJugadas;
             this.cssPaginaEleccionDeJugadas;
             this.tiempoParaElegirJUgada;
-            this.suscripcion;
-            this.htmlPaginaDuelo;
-            this.cssPaginaDuelo;
-            this.tiempoDelDuelo;
             this.main() };
 
         htmlPaginaEleccionDeJugadas() {
@@ -63,28 +59,69 @@ export default function miPartida() {
             let style: HTMLElement = document.createElement('style');
             style.innerHTML = `
                 * {  box-sizing: border-box }
+            
                 .contenedor {
+                border: 1px solid rgb(140, 140, 140);
+                border-radius: 0px;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                align-items: center;
-                outline: 1px solid red }
+                align-items: center }
 
                 .cronometro {
+                padding-top: 3vh;
+                padding-bottom: 3vh;
+                padding-left: 2vw;
+                padding-right: 2vw;
+                width: 40vw;
                 color: white;
-                text-align: center }
+                text-align: center;
+                font-size: 80px;
+                font-family: "Sixtyfour", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 400;
+                font-style: normal;
+                font-variation-settings:"BLED" 0, "SCAN" 0;
+                background-color: rgb(20, 20, 20) }
 
                 .contenedorJugadas {
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 justify-content: center;
-                align-items: flex-start;
-                outline: 1px solid black }
+                align-items: flex-start }
 
                 .piedra, .papel, .tijera {
-                border: 1px solid red;
+                padding-top: 2vh;
+                padding-bottom: 2vh;
+                padding-left: 2vw;
+                padding-right: 2vw;
+                border: 1px solid white;
+                border-radius: 0px;
+                width: 40vw;
+                background-color: rgb(40, 40, 40);
                 text-align: center;
-                color: white }`;
+                font-size: 20px;
+                font-family: "Zain", sans-serif;
+                font-weight: 700;
+                font-style: normal;
+                line-height: 3;
+                color: white }
+                
+                .piedra:hover {
+                background-color: rgb(60, 60, 60)}
+                .piedra:active {
+                background-color: rgb(20, 20, 20) }
+
+                .papel:hover {
+                background-color: rgb(60, 60, 60)}
+                .papel:active {
+                background-color: rgb(20, 20, 20) }
+
+                .tijera:hover {
+                background-color: rgb(60, 60, 60)}
+                .tijera:active {
+                background-color: rgb(20, 20, 20) }`;
+
             return style };
 
         tiempoParaElegirJUgada() {
@@ -100,65 +137,13 @@ export default function miPartida() {
             }, 1000)
         };
 
-        suscripcion(shadowRoot: any) {
-            state.suscribirse( () => { 
-                let estado = state.getState();
-                if (estado.contexto == 'jugadasObtenidas') { 
-                    let secondContainer: HTMLElement = this.htmlPaginaDuelo();
-                    let secondStyle: HTMLElement = this.cssPaginaDuelo();
-                    shadowRoot.innerHTML = ``;
-                    shadowRoot.appendChild(secondContainer);
-                    shadowRoot.appendChild(secondStyle);
-                    this.tiempoDelDuelo() } 
-            })
-        };
-
-        htmlPaginaDuelo(): HTMLElement {
-            let estado = state.getState();
-            let contenedor: HTMLElement = document.createElement('div');
-            let propietarioJugada: HTMLElement = document.createElement('div');
-            let invitadoJugada: HTMLElement = document.createElement('div');
-            contenedor.setAttribute('class', 'contenedor');
-            propietarioJugada.setAttribute('class', 'propietarioJugada');
-            invitadoJugada.setAttribute('class', 'invitadoJugada');
-            propietarioJugada.textContent = estado.jugadaPropietario;
-            invitadoJugada.textContent = estado.jugadaInvitado;
-            contenedor.appendChild(propietarioJugada);
-            contenedor.appendChild(invitadoJugada);
-            return contenedor };
-
-        cssPaginaDuelo(): HTMLElement {  
-            let style: HTMLElement = document.createElement('style');
-            style.innerHTML = `
-                * {  box-sizing: border-box }
-
-                .contenedor {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                outline: 1px solid black }
-
-                .propietarioJugada, .invitadoJugada {
-                border: 1px solid red;
-                text-align: center;
-                color: white }`;
-            return style};
-
-        tiempoDelDuelo() {
-            setTimeout(() => {
-                state.duelo()
-            }, 5000)
-        };
-
         main() {
             let htmlPaginaEleccionDeJugadas: HTMLElement = this.htmlPaginaEleccionDeJugadas();
             let cssPaginaElccionDeJugadas: HTMLElement = this.cssPaginaEleccionDeJugadas();
             let shadowRoot = this.attachShadow({ mode: 'open' });
             shadowRoot.appendChild(htmlPaginaEleccionDeJugadas);
             shadowRoot.appendChild(cssPaginaElccionDeJugadas);
-            this.tiempoParaElegirJUgada();
-            this.suscripcion(shadowRoot) }
+            this.tiempoParaElegirJUgada() }
     }
 
     customElements.define('mi-partida', MiPartida);

@@ -19,13 +19,21 @@ export default function miText(): void {
                 * {  box-sizing: border-box }
             
                 .p {
-                margin-top: 10px;
-                margin-bottom: 10px;
-                display: block;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                width: 100%;
+                margin: 0px;
+                padding-top: 3vh;
+                padding-bottom: 3vh;
+                padding-left: 2vw;
+                padding-right: 2vw;
+                border: 1px solid white;
+                border-radius: 0px;
+                width: 40vw;
+                background-color: rgb(20, 20, 20);
                 text-align: center;
+                font-size: 25px;
+                font-family: "Zalando Sans Expanded", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 200;
+                font-style: normal;
                 color: white }`;
 
             return style };

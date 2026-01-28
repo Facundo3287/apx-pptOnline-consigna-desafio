@@ -41,6 +41,7 @@ export default function miForm() {
         css() {
             let style: HTMLElement = document.createElement('style');
             style.innerHTML = `
+
                 * { box-sizing: border-box }
 
                 .form {
@@ -50,22 +51,40 @@ export default function miForm() {
                 align-items: center }
                 
                 .input {
-                margin: 5px;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                width: 100%;
-                background-color: #05172f;
+                padding-top: 3vh;
+                padding-bottom: 3vh;
+                border: 1px solid black;
+                width: 40vw;
+                background-color: white;
                 text-align: center;
-                color: white }
+                font-size: 15px;
+                font-family: "Sixtyfour", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 400;
+                font-style: normal;
+                font-variation-settings: "BLED" 0, "SCAN" 0;
+                line-height: 3;
+                color: black }
                 
                 .submit {
-                margin: 5px;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                width: 100%;
-                background-color: #05172f;
+                padding-top: 2vh;
+                padding-bottom: 2vh;
+                border: 1px solid white;
+                width: 40vw;
+                background-color: rgb(40, 40, 40);
                 text-align: center;
-                color: white }`;
+                font-size: 20px;
+                font-family: "Zain", sans-serif;
+                font-weight: 700;
+                font-style: normal;
+                line-height: 3;
+                color: white }
+                
+                .submit:hover {
+                background-color: rgb(60, 60, 60)}
+                .submit:active {
+                background-color: rgb(20, 20, 20) }`;
+
             return style };
 
         render() {
